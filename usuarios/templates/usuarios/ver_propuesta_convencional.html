@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Propuesta{% endblock %}
+
+{% block content %}
+
+
+<section class="portada-lcen-colores">
+    <img src="{% static 'img/header-propuestas.jpg' %}" alt="img collage portada" class="img-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'verpropuestasconvencionales' %}">Propuestas</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ object.titulo|truncatechars:50 }}</li>
+        </ol>
+    </nav>
+</section>
+
+
+<section class="leer-propuesta container">
+    <div class="row">
+        <div class="col-12 col-sm-12 col-md-8 informacion-propuesta">
+            <p class="tema-principal">{{ object.tema }}</p>
+            <p class="numero-propuesta">Propuesta <b>N° {{ object.id }}</b></p>
+            <h3>{{ object.titulo }}</h3>
+            <p class="autor">Esta es una propuesta de: <b> {{ object.autor }}</b></p>
+            <!-- <p class="colaborador">Elaborada con: <b><a href="#">Nombre persona/organización</a></b></p> -->
+            <div class="linea yellow my-3"></div>
+
+            <h4>Problema a solucionar:</h4>
+            <p>{{ object.problema|linebreaks }}</p>
+
+            <h4>Situación Ideal:</h4>
+            <p>{{ object.situacion|linebreaks }}</p>
+
+            <h4>Qué debe contemplar la Nueva Constitución</h4>
+            <p>{{ object.componente|linebreaks }}</p>
+            <div class="linea yellow my-3"></div>
+            <p class="lugar"><i class="fas fa-map-marker-alt"></i>Esta propuesta se elaboró en: <b>{{ object.comuna }}, {{ object.region }}, {{ object.pais }}</b></p>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 informacion-destacada">
+            <div class="bg-color">
+                <img src="{% static 'img/bg-propuestas/participacion.png' %}" alt="img medio ambiente" class="img-tema-propuesta">
+                <h3>Esta propuesta cuenta con:</h3>
+                <div class="cifras">
+                    <p><span class="numero">{{ object.compromisos.count }}</span> convencionales comprometidos</p>
+                    <p><span class="numero">{{ object.apoyos.count }}</span> apoyo(s) ciudadano(s)</p>
+                </div>
+                <h3 class="apoyar">Apoya esta propuesta</h3>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn-lcen apoyar button hvr-sweep-to-right" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Comprometer <i class="fas fa-heart"></i></button>
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Comprometer con Propuesta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h3>¿Deseas comprometerte con la propuesta {{ object.titulo }}?</h3>
+                                <p></p>
+
+                                <form class="" action="{% url 'prop_compromiso' object.pk %}" method="post">
+                                  {% csrf_token %}
+                                  <button type="submit" name="object_id" value="{{ object.id }}" class="btn btn-lcen apoyar button hvr-sweep-to-right">
+                                    Comprometer <i class="fas fa-heart"></i>
+                                  </button>
+                                </form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <h3 class="compartir">Comparte esta propuesta</h3>
+                <ul class="redes-sociales">
+                    <li><a href="#"><i class="fab fa-twitter-square"></i></a></li>
+                    <li><a href="#"><i class="fab fa-facebook-square"></i></a></li>
+                    <li><a href="#"><i class="fab fa-linkedin"></i></a></li>
+                    <li><a href="#"><i class="fab fa-instagram-square"></i></a></li>
+                </ul> -->
+            </div>
+            <div class="linea yellow my-3"></div>
+
+            <div class="info-adicional">
+                <h5>Documentos adjuntos:</h5>
+                <ul>
+                  {% if object.anexo_propuesta %}
+                    <li><a href="{{ object.anexo_propuesta.url }}" target="_blank"><i class="fas fa-circle"></i>Documento Adjunto (Abrir o Descargar)</a></li>
+                  {% else %}
+                    No hay un documento anexo
+                  {% endif %}
+
+                  {% if object.anexo2_propuesta %}
+                    <li><a href="{{ object.anexo2_propuesta.url }}" target="_blank"><i class="fas fa-circle"></i>Documento Adjunto (Abrir o Descargar)</a></li>
+                  {% else %}
+                  {% endif %}
+
+                  {% if object.anexo3_propuesta %}
+                    <li><a href="{{ object.anexo3_propuesta.url }}" target="_blank"><i class="fas fa-circle"></i>Documento Adjunto (Abrir o Descargar)</a></li>
+                  {% else %}
+                  {% endif %}
+                </ul>
+                <h5>Enlaces de interés:</h5>
+                <ul>
+                  {% if object.link_extra1 %}
+                    <li><a href="{{ object.link_extra1 }}" target="_blank"><i class="fas fa-circle"></i>{{ object.link_extra1 }}</a></li>
+                  {% else %}
+                    No hay link con información complementaria
+                  {% endif %}
+
+                  {% if object.link_extra2 %}
+                    <li><a href="{{ object.link_extra2 }}" target="_blank"><i class="fas fa-circle"></i>{{ object.link_extra2 }}</a></li>
+                  {% else %}
+                  {% endif %}
+                </ul>
+
+            </div>
+
+            <p class="reportar">Si encuentras que esta propuesta viola los <a href="{% url 'terminos' %}" target="_blank">"Términos y Condiciones"</a> para la creación de una propuesta, ayúdanos <a href="mailto:contacto@laconstitucionesnuestra.cl" target="_blank">reportando</a> esta propuesta.</p>
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

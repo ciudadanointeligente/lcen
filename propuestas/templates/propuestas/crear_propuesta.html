@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Crear Propuesta{% endblock %}
+
+{% block content %}
+
+
+<section class="container-fluid portada-collage-lcen">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7 wow animate__animated animate__fadeIn animate__delay-1s">
+                <img src="{% static 'img/collage-portada-secciones.png' %}" alt="img collage portada" class="img-fluid">
+            </div>
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5 titulo wow animate__animated animate__fadeIn animate__delay-1s">
+                <div class="informacion">
+                    <div class="decoracion yellow"></div>
+                    <h1>Crea tu propuesta</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="#">Inicio</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Crear propuesta: Paso 1</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="container subir-propuesta">
+    <div class="row justify-content-md-center d-flex align-items-start">
+        <div class="col-12 col-sm-12 col-md-4 informacion">
+            <!--<a href="#" class="volver"><i class="fas fa-chevron-left"></i>Paso anterior</a>-->
+            <div class="informacion-ayuda">
+                <p class="paso-propuesta">Paso 1</p>
+                <h2>Tu Ubicación</h2>
+                <h4>Para tener en cuenta</h4>
+                <p class="recomendacion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste consequuntur fugit sapiente ipsum et obcaecati, nisi mollitia nobis.</p>
+                <p class="recomendacion">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iste consequuntur fugit sapiente ipsum et obcaecati, nisi mollitia nobis.</p>
+            </div>
+            <div class="blue contacto-ayuda">
+                <h3>¿Necesitas ayuda técnica?</h3>
+                <p>Por favor ccontacta a <b>XXXXXX</b></p>
+            </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-5 form">
+          <form action="{% url 'crear_propuesta' %}" method="POST" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {{ form | crispy }}
+            <button type="submit" class="btn btn-success">Crear Propuesta</button>
+          </form>
+        </div>
+    </div>
+</section>
+
+
+<section>
+
+<div class="row">
+    <div class="col-md-8 col-sm-10 col-12">
+      <h2>Crear Propuesta</h2>
+          <form action="{% url 'crear_propuesta' %}" method="POST" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {{ form | crispy }}
+            <button type="submit" class="btn btn-success">Crear Propuesta</button>
+          </form>
+    </div>
+</div>
+
+</section>
+
+{% endblock %}

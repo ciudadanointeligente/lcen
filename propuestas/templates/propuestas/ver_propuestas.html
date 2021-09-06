@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Propuestas{% endblock %}
+
+
+
+{% block content %}
+
+<section class="portada-lcen-colores">
+    <img src="{% static 'img/header-propuestas.jpg' %}" alt="img collage portada" class="img-fluid img-banner-desktop">
+    <img src="{% static 'img/header-propuestas-movil.jpg' %}" alt="img collage portada" class="img-fluid img-banner-movil">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Propuestas</li>
+        </ol>
+    </nav>
+</section>
+
+<div class="filtro-propuestas">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-12">
+                <h2>Tenemos <span>{{ propuestas_list.count }}</span> propuestas ciudadanas para la nueva constitución</h2>
+
+                <div class="btn-subir-propuestas">
+                     <a href="{% url 'crearpropuestas' %}" class="btn-lcen button hvr-sweep-to-right subir-propuesta-btn">Sube tu propuesta</a>
+                </div>
+
+                <p>Revisa las propuestas ciudadanas</p>
+            </div>
+            <!-- <div class="col-12 col-sm-12 col-md-12 formulario">
+                <form action="">
+                    <select class="form-select" aria-label="seleccion tema">
+                      <option selected>Buscar por tema</option>
+                      <option value="1">Salud</option>
+                      <option value="2">Medio ambiente adecuado</option>
+                      <option value="3">Adultos mayores</option>
+                    </select>
+
+                    <select class="form-select" aria-label="seleccion comuna">
+                      <option selected>Buscar por comuna</option>
+                      <option value="1">La Florida</option>
+                      <option value="2">Renca</option>
+                      <option value="3">Providencia</option>
+                      <option value="4">La Reina</option>
+                      <option value="5">Puente Alto</option>
+                      <option value="6">Pirque</option>
+                    </select>
+
+                    <select class="form-select" aria-label="propuesta hecha por">
+                      <option selected>Hecha por</option>
+                      <option value="1">Ciudadanxs</option>
+                      <option value="2">Organizaciones</option>
+                    </select>
+
+                    <select class="form-select" aria-label="Ordenar por">
+                      <option selected>Ordenar por</option>
+                      <option value="1">Más apoyos ciudadanos</option>
+                      <option value="2">Más apoyos convencionales</option>
+                      <option value="3">Más antiguas</option>
+                      <option value="3">Más recientes</option>
+                    </select>
+                    <button type="submit" class="btn btn-lcen button hvr-sweep-to-right">Buscar</button>
+                    <a href="#" class="limpiar-historial btn btn-lcen button hvr-sweep-to-right">Limpiar resultados de búsqueda</a>
+                </form>
+            </div> -->
+        </div>
+    </div>
+</div>
+
+
+
+<section class="container propuestas-seccion wow animate__animated animate__fadeIn">
+    <div class="row">
+
+{% for propuesta in propuestas_list %}
+
+        <div class="col-12 col-sm-12 col-md-6 col-lg-4">
+            <div class="propuesta salud">
+                <div class="informacion-propuesta">
+                    <h3 class="tema">{{ propuesta.tema }}</h3>
+                    <p class="numero-propuesta">Propuesta <b>N° {{ propuesta.id }}</b></p>
+                    <h2 class="titulo">{{ propuesta.titulo }}</h2>
+                    <p class="extracto">
+                      {{ propuesta.problema|truncatechars:250 }}
+                    </p>
+                    <div class="informacion-datos">
+                        <h4>Se realizó en:</h4>
+                        <p class="lugar">
+                          {{ propuesta.region }}, Comuna {{ propuesta.comuna }}
+                        </p>
+                        <h4>Propuesta de</h4>
+                        {% if propuesta.autor.organizacion %}
+                        <img src="{{ propuesta.autor.organizacion.logo_organizacion.url }}" alt="logo organizacion">
+                        <p class="lugar">
+                        {{ propuesta.autor.organizacion.nombre_perfil }}
+                        </p>
+                        {% else %}
+                        <p class="lugar">
+                        Propuesta Personal
+                        </p>
+                        {% endif %}
+
+                    </div>
+                    <img src="{% static 'img/bg-propuestas/participacion.png' %}" alt="img salud" class="img-tema-propuesta">
+                </div>
+                <div class="bg-black">
+                    <div class="call-to-action">
+                        <a href="{{ propuesta.pk }}" class="btn-lcen apoyar">Apoyar <i class="fas fa-heart"></i></a>
+                        <a href="{{ propuesta.pk }}" class="btn-lcen">Leer propuesta</a>
+                    </div>
+                    <div class="cifras">
+                        <p><span class="numero">{{ propuesta.compromisos.count }}</span> convencionalxs comprometidxs</p>
+                        <p><span class="numero">{{ propuesta.apoyos.count }}</span> apoyos ciudadanos</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endfor %}
+
+
+<!-- <div class="col-12 col-sm-12 col-md-12 paginacion-propuestas">
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item disabled">
+            <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+        </li>
+        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item">
+            <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+        </li>
+    </ul>
+</nav>
+</div> -->
+</div>
+</section>
+
+
+<section class="a-ponerse-con-propuestas container-fluid no-bg">
+   <div class="llamado-propuestas">
+       <h1>A ponerse con propuestas</h1>
+       <img src="{% static 'img/megafono-recorte.png' %}" alt="megafono-recorte" class="megafono-recorte img-fluid">
+   </div>
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-12 col-sm-12 col-md-6 wow animate__animated animate__fadeIn">
+                <img src="{% static 'img/collage-propuestas.png' %}" alt="collage a ponerse con propuestas" class="img-fluid p-4">
+            </div>
+            <div class="col-12 col-sm-12 col-md-6 wow animate__animated animate__fadeIn animate__delay-1s">
+                <h2>Tu propuesta a la convención</h2>
+                <p>Acá tienes la oportunidad de subir tus propuestas para la nueva Constitución de Chile y nosotrxs la haremos llegar a la Convención. <b>¡No te quedes fuera!</b></p>
+                <a href="{% url 'crearpropuestas' %}" class="btn-lcen button hvr-sweep-to-right">Sube tu propuesta</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}
