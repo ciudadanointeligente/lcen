@@ -58,7 +58,6 @@ class Propuesta(models.Model):
     pais = models.ForeignKey(Pais,
         related_name="pais_propuesta",
         verbose_name="País de Origen de Propuesta",
-        blank=True,
         null=True,
         on_delete=models.SET_NULL)
     region = models.ForeignKey(Region,
@@ -79,10 +78,9 @@ class Propuesta(models.Model):
         on_delete=models.SET_NULL)
     otros_temas = models.ManyToManyField(SubtemaPropuesta,
         related_name="otros_temas_propuesta",
-        verbose_name="Otros Temas de Propuesta",
-        blank=True)
+        verbose_name="Otros Temas de Propuesta")
     tema_extra = models.CharField("Tema complementario",
-        max_length=255,
+        max_length=100,
         null=True,
         blank=True)
     # paso 3
@@ -98,13 +96,17 @@ class Propuesta(models.Model):
     organizaciones_de_propuesta = models.TextField("Otras Organizaciones",
         null=True,
         blank=True)
+    organizaciones = models.ManyToManyField(Organizacion,
+        verbose_name="Otras Organizaciones de la Propuesta",
+        blank=True,
+        related_name="organizaciones_propuesta")
     #paso 5
     compromiso_convencionales = models.BooleanField("Convencionales comprometidos",
         default=False)
-    convencionales_comprometidos = models.ManyToManyField(Constituyente,
-        related_name="convencionales_comprometidos",
-        verbose_name="Nombres Convencionales Comprometidos",
-        blank=True)
+    # convencionales_comprometidos = models.ManyToManyField(Constituyente,
+    #     related_name="convencionales_comprometidos",
+    #     verbose_name="Nombres Convencionales Comprometidos",
+    #     blank=True)
     # paso 6
     anexo_propuesta = models.FileField(upload_to='documents/',
         verbose_name="Anexos de la Propuesta",
@@ -135,10 +137,6 @@ class Propuesta(models.Model):
     apoyos = models.ManyToManyField(User, related_name="apoyos_propuestas", through='ApoyoPropuesta')
     compromisos = models.ManyToManyField(User, related_name="compromisos_propuestas", through='CompromisoPropuesta')
 
-    class Meta:
-        verbose_name = "Propuesta Ciudadana"
-        verbose_name_plural = "Propuestas Ciudadanas"
-
     def __str__(self):
         return self.titulo
 
@@ -149,6 +147,10 @@ class Propuesta(models.Model):
     @property
     def numcompromisos_likes(self):
         return self.compromisos.all().count()
+
+    class Meta:
+        verbose_name = "Propuesta Ciudadana"
+        verbose_name_plural = "Propuestas Ciudadanas"
 
 
 

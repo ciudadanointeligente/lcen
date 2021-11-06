@@ -19,68 +19,31 @@
 <div class="filtro-propuestas formulario filtro-convencionales">
     <div class="container">
         <div class="row">
+
             <div class="col-12 col-sm-12 col-md-12">
                 <h2><span>155 personas</span> encargadas de escribir la nueva constitución</h2>
                 <p>Conoce quiénes son lxs convencionales y con qué propuestas de la ciudadanía se comprometen y apoyan</p>
             </div>
-            <!-- <div class="col-12 col-sm-12 col-md-12">
-                <form action="">
-                    <select class="form-select" aria-label="seleccion comuna">
-                      <option selected>Buscar por comuna</option>
-                      <option value="1">La Florida</option>
-                      <option value="2">Renca</option>
-                      <option value="3">Providencia</option>
-                      <option value="4">La Reina</option>
-                      <option value="5">Puente Alto</option>
-                      <option value="6">Pirque</option>
-                    </select>
-                    <select class="form-select" aria-label="seleccion lista">
-                      <option selected>Buscar por Lista</option>
-                      <option value="1">Salud</option>
-                      <option value="2">Medio ambiente adecuado</option>
-                      <option value="3">Adultos mayores</option>
-                    </select>
 
-                    <select class="form-select" aria-label="seleccion por partido">
-                      <option selected>Buscar por partido</option>
-                      <option value="1">Ciudadanxs</option>
-                      <option value="2">Organizaciones</option>
-                    </select>
-
-                    <select class="form-select" aria-label="Escanos reservados">
-                      <option selected>Escaños reservados</option>
-                      <option value="1">Pueblo Aymara</option>
-                      <option value="2">Pueblo Quechua</option>
-                      <option value="3">Pueblo Yámana</option>
-                      <option value="3">Pueblo Chango</option>
-                      <option value="3">Pueblo Rapa Nui</option>
-                      <option value="3">Pueblo Atacameño</option>
-                    </select>
-                    <button type="submit" class="btn btn-lcen button hvr-sweep-to-right">Filtrar</button>
-                </form>
-            </div> -->
+            <div class="col-12 col-sm-12 col-md-12 formulario">
+                  <form  method="get">
+                  {{ filtroconvencionales.form.lista }}
+                  {{ filtroconvencionales.form.distrito }}
+                  {{ filtroconvencionales.form.cargo }}
+                  {{ filtroconvencionales.form.email }}
+                    <button type="submit" class="btn btn-lcen button hvr-sweep-to-right">Buscar</button>
+                    <a href="{% url 'verconvencionales' %}" class="limpiar-historial btn btn-lcen button hvr-sweep-to-right">Limpiar</a>
+                  </form>
+            </div>
         </div>
     </div>
 </div>
 
 
-<!-- <section class="resultados-busqueda-titulo container-fluid">
-   <div class="container">
-      <div class="row d-flex align-items-center">
-          <div class="col-12 col-sm-12 col-md-8">
-              <h3><img src="{% static 'img/icono-bien.png' %}" alt="icono" width="25px;">Resultados de búsqueda por:<span> Nombre Búsqueda</span></h3>
-          </div>
-          <div class="col-12 col-sm-12 col-md-4">
-              <a href="#" class="limpiar-historial"><i class="far fa-times-circle"></i>Limpiar resultados de búsqueda</a>
-          </div>
-      </div>
-   </div>
-</section> -->
-
 
 <section class="resultados-convencionales container">
     <div class="row">
-        {% for convencional in constituyentes_list %}
+        {% for convencional in filtroconvencionales.qs %}
         <div class="col-12 col-sm-12 col-md-3">
             <figure class="figure">
               {% if convencional.foto %}
@@ -92,10 +55,10 @@
                     <h4>{{ convencional.user.nombre }}</h4>
                     <ul class="datos">
                         <li>
-                            <p><b>Partido:</b> {{ convencional.movimiento }}</p>
+                          <p><b>Colectivo:</b> {{ convencional.lista }}</p>
                         </li>
                         <li>
-                            <p><b>Lista:</b> {{ convencional.lista }}</p>
+                          <p><b>Partido/Movimiento:</b> {{ convencional.movimiento }}</p>
                         </li>
                         <li>
                             <p><b>Distrito:</b> {{ convencional.distrito }}</p>
@@ -111,10 +74,10 @@
 
 
 
-<div class="col-12 col-sm-12 col-md-12 paginacion-propuestas">
+<!-- <div class="col-12 col-sm-12 col-md-12 paginacion-propuestas">
 <nav aria-label="Page navigation example">
   <ul class="pagination">
-    <!-- <span class="step-links"> -->
+
         {% if page_obj.has_previous %}
             <li class="page-item"><a class="page-link" href="?page=1">&laquo; Inicio</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previo</a></li>
@@ -124,10 +87,10 @@
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
             <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Último &raquo;</a></li>
         {% endif %}
-    <!-- </span> -->
+
   </ul>
 </nav>
-</div>
+</div> -->
 
 
 {% endblock %}

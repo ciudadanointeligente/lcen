@@ -93,10 +93,10 @@ class Organizacion(models.Model):
         help_text="Este es la reseña oficial de la Organización y se usará en el perfil público")
 
     # datos de ubicación
-    pais = models.ForeignKey(Pais, null=True, on_delete=models.SET_NULL)
-    region = models.ForeignKey(Region, null=True, on_delete=models.SET_NULL)
-    comuna = models.ForeignKey(Comuna, null=True, on_delete=models.SET_NULL)
-    alcance = models.ForeignKey(Alcance, null=True, on_delete=models.SET_NULL)
+    pais = models.ForeignKey(Pais, null=True, blank=True, on_delete=models.SET_NULL)
+    region = models.ForeignKey(Region, null=True, blank=True, on_delete=models.SET_NULL)
+    comuna = models.ForeignKey(Comuna, null=True, blank=True, on_delete=models.SET_NULL)
+    alcance = models.ForeignKey(Alcance, null=True, blank=True, on_delete=models.SET_NULL)
 
     # redes sociales
     sitioweb = models.URLField(
@@ -146,7 +146,7 @@ class Organizacion(models.Model):
         verbose_name = "Organzación"
         verbose_name_plural = "Organizaciones"
     def __str__(self):
-        return self.user.username
+        return self.nombre_perfil
 
 
 
@@ -170,7 +170,7 @@ class Convencional(models.Model):
         choices=RESERVADO)
     lista = models.ForeignKey(Lista,
         related_name="lista_de_constituyente",
-        verbose_name="Lista del Constituyente",
+        verbose_name="Colectivo del Constituyente",
         null=True,
         blank=True,
         on_delete=models.SET_NULL)
@@ -226,4 +226,4 @@ class Convencional(models.Model):
         verbose_name = "Convencional"
         verbose_name_plural = "Convencionales"
     def __str__(self):
-        return self.user.username
+        return self.user.nombre

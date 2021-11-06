@@ -1,7 +1,8 @@
 from django import forms
 from django.db import transaction
 from django.forms import ModelForm
-from propuestas.models import Propuesta, TemaPropuesta
+from propuestas.models import Propuesta, TemaPropuesta, SubtemaPropuesta
+from usuarios.models import Organizacion
 from mantenedores.models import *
 
 
@@ -33,7 +34,7 @@ class PropuestaForm2(forms.ModelForm):
         labels = {
             'tema': ('<h6><span style="text-transform:uppercase">1. ¿Cuál es el tema principal de tu propuesta?</span></h6><i>Selecciona el tema principal desde la lista desplegable</i>'),
             'otros_temas': ('<h6><span style="text-transform:uppercase">2. ¿Qué otros temas aborda tu propuesta?</span></h6><i>Por favor selecciona hasta tres temas adicionales, debes seleccionarlos con el mouse y apretando la telca Control -Ctrl-</i>'),
-            'tema_extra': ('<h6><span style="text-transform:uppercase">3. Otro tema, ¿cuál?</span></h6><i>Si tu propuesta contempla algún tema que no está en el listado, por favor escríbelo aquí en una palabra o frase breve</i>'),
+            'tema_extra': ('<h6><span style="text-transform:uppercase">3. Otro tema, ¿cuál?</span></h6><i>Si tu propuesta contempla algún tema que no está en el listado, por favor escríbelo aquí en una palabra o frase breve -máximo 100 cars.-</i>'),
         }
 
 
@@ -64,7 +65,26 @@ class PropuestaForm4(forms.ModelForm):
         model = Propuesta
         fields = [
         'otras_organizaciones',
-        'organizaciones_de_propuesta'
+        'organizaciones_de_propuesta',
+        'organizaciones',
+        ]
+        widgets = {
+            'otras_organizaciones': forms.CheckboxInput()
+        }
+        labels = {
+            'otras_organizaciones': ('<h6><span style="text-transform:uppercase">1. ¿Esta propuesta fue elaborada en conjunto con otras organizaciones?</span></h6><i>Marque si es así.</i>'),
+            'organizaciones_de_propuesta': ('<h6><span style="text-transform:uppercase">2. Si tu respuesta fue “sí”, escribe cuáles:</span></h6><i>Por favor escribe los nombres de las organizaciones que participaron en la elaboración de la propuesta, separados por comas ¡No olvides incluir a tu organización!</i>'),
+            'organizaciones': ('<h6><span style="text-transform:uppercase">Sólo si eres una Organización: <br>¿Esta Propuesta involucra a otras organizaciones que están en La Constitución es Nuestra? Ten en cuenta que la cocreación de propuestas debe ser oficial, sino la propuesta será corregida</span></h6><i>Si la organización de la que formas parte está en La Constitución es Nuestra, debes ingresar la propuesta a través del perfil de la organización y no como un usuarix particular</i><br><i>Si eres una organización y quieres incluir en la creación de la propuesta a organizaciones adicionales, debes seleccionarlas con el mouse y apretando la telca Control -Ctrl-</i>'),
+        }
+
+
+
+class PropuestaForm4a(forms.ModelForm):
+    class Meta:
+        model = Propuesta
+        fields = [
+        'otras_organizaciones',
+        'organizaciones_de_propuesta',
         ]
         widgets = {
             'otras_organizaciones': forms.CheckboxInput()

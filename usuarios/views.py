@@ -9,9 +9,11 @@ from django.views.generic import TemplateView
 from django.views.generic import UpdateView
 from django.views.generic import ListView
 from django.views.generic import DetailView
+from .filters import ConvencionalesFiltro
 from .forms import CiudadanoSignUpForm, OrganizacionSignUpForm, ConvencionalSignUpForm, OrganizacionChangeForm, UserPasswordResetForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordResetForm
-from propuestas.models import Propuesta
+from propuestas.models import Propuesta, TemaPropuesta
+from propuestas.filters import PropuestaTemas
 from .models import User, Organizacion, Convencional
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.core.mail import send_mail, BadHeaderError
@@ -20,6 +22,7 @@ from django.db.models.query_utils import Q
 from django.utils.http import urlsafe_base64_encode
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
+
 
 
 
@@ -86,6 +89,7 @@ class VerOrganizacionView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['lista_creadas'] = Propuesta.objects.filter(autor=self.object.user)
+        context['lista_cocreadas'] = Propuesta.objects.filter(organizaciones=self.object.id)
         context['lista_apoyadas'] = Propuesta.objects.filter(apoyos=self.object.user)
         return context
 
@@ -99,6 +103,11 @@ class VerConvencionalesView(ListView):
 
     def get_queryset(self):
         return Convencional.objects.order_by('email')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filtroconvencionales'] = ConvencionalesFiltro(self.request.GET, queryset=self.get_queryset())
+        return context
 
 
 
@@ -120,7 +129,12 @@ class VerPropuestasConvencionalView(ListView):
     template_name = 'usuarios/ver_propuestas_convencional.html'
 
     def get_queryset(self):
-        return Propuesta.objects.annotate(compromisos_count=Count('compromisos')).order_by('-compromisos_count')
+        return Propuesta.objects.annotate(apoyos_count=Count('apoyos')).order_by('-autor__organizacion','-apoyos_count')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['filtropropuestas'] = PropuestaTemas(self.request.GET, queryset=self.get_queryset())
+        return context
 
     def dispatch(self, request, *args, **kwargs):
         if not (self.request.user.is_authenticated and self.request.user.is_convencional):
@@ -138,6 +152,11 @@ class VerPropuestaConvencionalView(DetailView):
         if not (self.request.user.is_authenticated and self.request.user.is_convencional):
             return redirect('loginconvencionales')
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comprometidos'] = Propuesta.objects.filter(compromisos=self.object.compromisos.all())
+        return context
 
 
 

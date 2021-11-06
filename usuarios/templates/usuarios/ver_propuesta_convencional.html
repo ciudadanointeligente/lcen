@@ -20,10 +20,27 @@
 <section class="leer-propuesta container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-8 informacion-propuesta">
-            <p class="tema-principal">{{ object.tema }}</p>
+            <div class="tema-principal">
+            {% for otro_tema in object.otros_temas.all %}
+            {{ otro_tema }} ·
+            {% endfor %}
+            </div>
+            {% if object.tema_extra %}
+            <p>Tema Complementario: {{ object.tema_extra }}</p>
+            {% else %}
+            {% endif %}
             <p class="numero-propuesta">Propuesta <b>N° {{ object.id }}</b></p>
             <h3>{{ object.titulo }}</h3>
-            <p class="autor">Esta es una propuesta de: <b> {{ object.autor }}</b></p>
+            <p class="autor">Esta es una propuesta de: <b>
+              {% if object.autor.organizacion %}
+              {{ object.autor.organizacion.nombre_perfil }} ·
+              {% else %}
+              {{ object.autor }} ·
+              {% endif %}
+              {% for organizacion in object.organizaciones.all %}
+              {{ organizacion.nombre_perfil }} ·
+              {% endfor %}
+            </b></p>
             <!-- <p class="colaborador">Elaborada con: <b><a href="#">Nombre persona/organización</a></b></p> -->
             <div class="linea yellow my-3"></div>
 
@@ -36,7 +53,22 @@
             <h4>Qué debe contemplar la Nueva Constitución</h4>
             <p>{{ object.componente|linebreaks }}</p>
             <div class="linea yellow my-3"></div>
-            <p class="lugar"><i class="fas fa-map-marker-alt"></i>Esta propuesta se elaboró en: <b>{{ object.comuna }}, {{ object.region }}, {{ object.pais }}</b></p>
+            <p class="lugar"><i class="fas fa-map-marker-alt"></i>Esta propuesta se elaboró en: <b>
+              {% if object.region %}
+              {{ object.region }} ·
+              {% endif %}
+              {% if not object.region %}
+              {% endif %}
+              {% if object.comuna %}
+              {{ object.comuna }}
+              {% endif %}
+              {% if not object.comuna %}
+              {% endif %}
+              {% if not object.region and not object.comuna %}
+              Sin región y/o comuna definidas
+              {% endif %},
+              {{ object.pais }}
+            </b></p>
         </div>
         <div class="col-12 col-sm-12 col-md-4 informacion-destacada">
             <div class="bg-color">
@@ -87,7 +119,6 @@
                   {% if object.anexo_propuesta %}
                     <li><a href="{{ object.anexo_propuesta.url }}" target="_blank"><i class="fas fa-circle"></i>Documento Adjunto (Abrir o Descargar)</a></li>
                   {% else %}
-                    No hay un documento anexo
                   {% endif %}
 
                   {% if object.anexo2_propuesta %}
@@ -105,7 +136,6 @@
                   {% if object.link_extra1 %}
                     <li><a href="{{ object.link_extra1 }}" target="_blank"><i class="fas fa-circle"></i>{{ object.link_extra1 }}</a></li>
                   {% else %}
-                    No hay link con información complementaria
                   {% endif %}
 
                   {% if object.link_extra2 %}
@@ -114,9 +144,31 @@
                   {% endif %}
                 </ul>
 
+                <h5>Compromisos de Convencionales:</h5>
+                {% if object.compromisos.all %}
+                <p>
+                  Covencionales comprometidos con propuesta:
+                  {% for compromiso in object.compromisos.all %}
+                  <ul>
+                    <a href="/usuarios/verconvencionales/{{ compromiso.convencional.pk }}" target="_blank">{{ compromiso.nombre }}</a>
+                  </ul>
+                  {% endfor %}
+                </p>
+                {% endif %}
+
+                {% if not object.compromisos.all %}
+                <p>
+                  No hay Convencionales comprometidos con esta propuesta ciudadana.
+                </p>
+                {% endif %}
+
             </div>
 
-            <p class="reportar">Si encuentras que esta propuesta viola los <a href="{% url 'terminos' %}" target="_blank">"Términos y Condiciones"</a> para la creación de una propuesta, ayúdanos <a href="mailto:contacto@laconstitucionesnuestra.cl" target="_blank">reportando</a> esta propuesta.</p>
+<p class="reportar">Si encuentras que esta propuesta viola los <a href="{% url 'terminos' %}" target="_blank">"Términos y Condiciones"</a> para la creación de una propuesta, ayúdanos
+<a href="mailto:contacto@laconstitucionesnuestra.cl?subject=La%20Propuesta%20{{object.titulo}}%20no%20debe%20estar%20en%20LCeN&body=La%20propuesta%20con%20título%20{{object.titulo}},%20que%20se%20puede%20leer%20en%20https://laconstitucionesnuestra.cl{{request.get_full_path}},%20debe%20ser%20revisada%20por%20las%20siguientes%20razones..." target="_blank"> reportándola.</a></p>
+
+
+
         </div>
     </div>
 </section>
