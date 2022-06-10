@@ -120,21 +120,21 @@ En ese archivo debe incluir la siguiente información:
 
 <code>ALLOWED_HOSTS=  ()</code>
 
-<code>DB_NAME=lcen2021  ()</code>
+<code>DB_NAME= nombre db  ()</code>
 
-<code>DB_USER=root  ()</code>
+<code>DB_USER= user db  ()</code>
 
-<code>DB_PASSWORD=chanaral  ()</code>
+<code>DB_PASSWORD= pass db  ()</code>
 
 <code>DB_HOST=localhost  ()</code>
 
 <code>STATIC_URL='/static/'  ()</code>
 
-<code>STATIC_ROOT=/home/felipe/lcen/static/  ()</code>
+<code>STATIC_ROOT= ruta  ()</code>
 
-<code>STATICFILES_DIRS=/home/felipe/lcen/lcen/static  ()</code>
+<code>STATICFILES_DIRS= ruta  ()</code>
 
-<code>MEDIA_ROOT=/home/felipe/lcen/lcen/media/  ()</code>
+<code>MEDIA_ROOT= ruta  ()</code>
 
 <code>MEDIA_URL='/media/'  ()</code>
 
