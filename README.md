@@ -6,7 +6,7 @@
 <a href="https://ciudadaniai.org/index"><img src="https://gitlab.com/pedregalux/images2021/-/raw/master/logofci.png" width="150"></a>
 <a href="https://laconstitucionesnuestra.cl/"><img src="https://gitlab.com/pedregalux/images2021/-/raw/master/lcen.jpg" width="150"></a>
 
-La Constitución es Nuestra es un proyecto de Ciudadanía Inteligente, The Global Initiative y Constitu+yo.
+La Constitución es Nuestra es un proyecto desarrollado por Ciudadanía Inteligente e impulsado por The Global Initiative, Amnistía Internacional, Avina, FES, Open Society y Constitu+yo.
 
 ## Objetivos del proyecto
 - Ser una plataforma para la creación de propuestas para la nueva constitución
