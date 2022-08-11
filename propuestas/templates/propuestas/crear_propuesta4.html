@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Crear Propuesta{% endblock %}
+
+{% block content %}
+
+<section class="container-fluid portada-collage-lcen">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7 wow animate__animated animate__fadeIn animate__delay-1s">
+                <img src="{% static 'img/collage-portada-secciones.png' %}" alt="img collage portada" class="img-fluid">
+            </div>
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5 titulo wow animate__animated animate__fadeIn animate__delay-1s">
+                <div class="informacion">
+                    <div class="decoracion yellow"></div>
+                    <h1>Crea tu propuesta</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Crear propuesta: Paso 4</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="container subir-propuesta">
+    <div class="row justify-content-md-center d-flex align-items-start">
+      <div class="col-12 col-sm-12 col-md-4 informacion">
+          <!-- <a href="#" class="volver"><i class="fas fa-chevron-left"></i>Paso anterior</a> -->
+          <div class="informacion-ayuda">
+              <p class="paso-propuesta">Paso 4</p>
+              <h2>Tus Alianzas</h2>
+              <h4>Para tener en cuenta</h4>
+              <p class="recomendacion">Una propuesta constitucional se fortalece con los aportes de más personas y organizaciones. ¡Te invitamos a trabajar colaborativamente! Además, mientras más apoyo tenga, más posibilidades tiene de incidir en el debate constitucional, tanto entre las y los convencionales constituyentes, como entre la ciudadanía.</p>
+              <p class="recomendacion">Si comenzaste a trabajar tu propuesta hace meses y lograste las firmas y/o compromisos por parte de quienes hoy son convencionales constituyentes, ¡cuéntanos quiénes se comprometieron! Esto nos ayudará en la definición de una estrategia de incidencia para lograr más apoyos para tu propuesta (y otras afines) dentro de la Convención.</p>
+          </div>
+          <div class="blue contacto-ayuda">
+              <h3>¿Necesitas ayuda técnica?</h3>
+              <p>Por favor escribe a <a href="mailto:soporte@laconstitucionesnuestra.cl"><b>soporte@laconstitucionesnuestra.cl</b></a></p>
+          </div>
+      </div>
+        <div class="col-12 col-sm-12 col-md-5 form">
+
+          <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
+
+            <table>
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                    {{ form }}
+                {% endfor %}
+            {% else %}
+                {{ wizard.form | crispy }}
+            {% endif %}
+            </table>
+            {% if wizard.steps.prev %}
+            <button class="btn-lcen button hvr-sweep-to-right" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">Inicio</button>
+            <button class="btn-lcen button hvr-sweep-to-right" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Anterior</button>
+            {% endif %}
+            <input class="btn-lcen button hvr-sweep-to-right" type="submit" value="siguiente"/>
+
+          </form>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}

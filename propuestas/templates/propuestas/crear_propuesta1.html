@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block title %}Crear Propuesta{% endblock %}
+
+{% block content %}
+
+<section class="container-fluid portada-collage-lcen">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-12 col-md-7 col-lg-7 wow animate__animated animate__fadeIn animate__delay-1s">
+                <img src="{% static 'img/collage-portada-secciones.png' %}" alt="img collage portada" class="img-fluid">
+            </div>
+            <div class="col-12 col-sm-12 col-md-5 col-lg-5 titulo wow animate__animated animate__fadeIn animate__delay-1s">
+                <div class="informacion">
+                    <div class="decoracion yellow"></div>
+                    <h1>Crea tu propuesta</h1>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Crear propuesta: Paso 1</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container subir-propuesta">
+    <div class="row justify-content-md-center d-flex align-items-start">
+
+      <div class="col-12 col-sm-12 col-md-4 informacion">
+          <div class="informacion-ayuda">
+              <p class="paso-propuesta">Paso 1</p>
+              <h2>Tu Ubicación</h2>
+              <h4>Para tener en cuenta</h4>
+              <p class="recomendacion">Por favor, cuéntanos desde dónde estás enviando tu propuesta, pues nos ayudará a conectarla con las y los convencionales constituyentes de tu distrito (si aplica). También nos permitirá sistematizar territorialmente las propuestas recibidas.</p>
+              <p class="recomendacion">Si eres parte de una comunidad chilena en el exterior, solo deberás indicar en qué país te encuentras, seleccionando en región y comuna la opción “no aplica”.</p>
+          </div>
+          <div class="blue contacto-ayuda">
+              <h3>¿Necesitas ayuda técnica?</h3>
+              <p>Por favor escribe a <a href="mailto:soporte@laconstitucionesnuestra.cl"><b>soporte@laconstitucionesnuestra.cl</b></a></p>
+          </div>
+      </div>
+
+        <div class="col-12 col-sm-12 col-md-5 form">
+
+          <form enctype="multipart/form-data" action="" method="post">{% csrf_token %}
+
+            <table>
+            {{ wizard.management_form }}
+            {% if wizard.form.forms %}
+                {{ wizard.form.management_form }}
+                {% for form in wizard.form.forms %}
+                    {{ form }}
+                {% endfor %}
+            {% else %}
+                {{ wizard.form | crispy }}
+            {% endif %}
+            </table>
+            {% if wizard.steps.prev %}
+            <button class="btn-lcen button hvr-sweep-to-right" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">Primer Paso</button>
+            <button class="btn-lcen button hvr-sweep-to-right" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">Paso Anterior</button>
+            {% endif %}
+            <input class="btn-lcen button hvr-sweep-to-right" type="submit" value="siguiente"/>
+
+          </form>
+
+        </div>
+    </div>
+</section>
+
+{% endblock %}
